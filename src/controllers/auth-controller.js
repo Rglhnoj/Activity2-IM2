@@ -2,8 +2,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/auth-model");
 
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // Use env variable in production
-const JWT_EXPIRES_IN = "1d"; // Token valid for 1 day
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; 
+const JWT_EXPIRES_IN = "1d"; 
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -43,7 +43,7 @@ const login = async (req, res) => {
     return res.status(400).json({ message: "Email and password are required" });
 
   try {
-    const user = await User.findByEmail(email); // You must have this method in your model
+    const user = await User.findByEmail(email); 
     if (!user)
       return res.status(401).json({ message: "Invalid email or password" });
 
@@ -58,12 +58,12 @@ const login = async (req, res) => {
       { expiresIn: JWT_EXPIRES_IN }
     );
 
-    // Send token in HttpOnly cookie
+  
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // true in production
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        secure: process.env.NODE_ENV === "production", 
+        maxAge: 24 * 60 * 60 * 1000, 
         sameSite: "Strict",
       })
       .status(200)
